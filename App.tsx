@@ -1,9 +1,16 @@
-// File: App.tsx
 import React, { useState, useEffect, createContext } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { initializeAuth } from 'firebase/auth';
+import { getReactNativePersistence } from 'firebase/auth/react-native'; // <--- THIS IS THE CRITICAL CHANGE!
+// Add this import for AsyncStorage
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage'; // <--- Keep this
+
+// Your existing imports for getFirestore, Firestore, etc. remain
+import { getFirestore, Firestore } from 'firebase/firestore';
+import { Auth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth'; // Auth is still from 'firebase/auth'
+
+// ... rest of your App.tsx code
 
 // Import screens
 import HomeScreen from './src/screens/HomeScreen';
@@ -35,8 +42,9 @@ export default function App() {
     try {
       const app = initializeApp(FIREBASE_CONFIG);
       const firestore = getFirestore(app);
-      const firebaseAuth = getAuth(app);
-
+      const firebaseAuth = initializeAuth(app, { // <--- REPLACE THIS LINE
+        persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+      });
       setDb(firestore);
       setAuth(firebaseAuth);
 
