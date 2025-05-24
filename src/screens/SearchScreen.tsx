@@ -5,9 +5,9 @@ import { collection, doc, setDoc } from 'firebase/firestore';
 import { AppContext } from '../../App';
 import { Book } from '../types'; // Import Book interface
 
-import BookCard from '../components';
+import BookCard from '../components/BookCard';
 import BookDetailModal from '../components/BookDetailModal';
-import { ALL_BOOKS } from '../utils/bookData';
+import { ALL_BOOKS } from '../utils/bookData'; // Import allBooks from bookData.ts
 
 const SearchScreen: React.FC = () => {
   const appContext = useContext(AppContext);
